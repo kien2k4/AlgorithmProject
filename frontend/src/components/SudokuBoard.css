@@ -1,0 +1,56 @@
+.sudoku-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px auto;
+}
+
+.sudoku-board {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #333;
+  width: fit-content;
+  margin-bottom: 50px;
+}
+
+.sudoku-row {
+  display: flex;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.controls button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.controls button:hover {
+  background-color: #45a049;
+}
+
+.controls button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.error-message, .validation-error-message {
+  color: #d32f2f;
+  margin-top: 10px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  max-width: 400px;
+  text-align: center;
+}

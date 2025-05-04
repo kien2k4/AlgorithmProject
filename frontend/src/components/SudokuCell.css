@@ -1,0 +1,49 @@
+.sudoku-cell {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.sudoku-cell:focus {
+  background-color: #e6f7ff;
+}
+
+/* Style for solved cells */
+.solved-cell {
+  color: #1890ff; /* Blue color for solved numbers */
+  font-weight: bold;
+}
+
+/* Style for invalid cells */
+.invalid-cell {
+  color: #d32f2f; /* Red color for invalid numbers */
+  background-color: #ffebee; /* Light red background */
+  border: 1px solid #ffcdd2; /* Red border */
+  animation: pulse 1.5s infinite; /* Pulsing animation */
+}
+
+@keyframes pulse {
+  0% { background-color: #ffebee; }
+  50% { background-color: #ffcdd2; }
+  100% { background-color: #ffebee; }
+}
+
+/* Border styles for the 3x3 boxes */
+.border-top {
+  border-top: 2px solid #333;
+}
+
+.border-bottom {
+  border-bottom: 2px solid #333;
+}
+
+.border-left {
+  border-left: 2px solid #333;
+}
+
+.border-right {
+  border-right: 2px solid #333;
+}
