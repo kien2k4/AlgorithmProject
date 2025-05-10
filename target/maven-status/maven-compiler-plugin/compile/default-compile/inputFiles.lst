@@ -1,6 +1,7 @@
 /Users/finn/Documents/GitHub/SudokuSolver/src/main/java/com/rmit/sudoku/controller/SudokuController.java
 /Users/finn/Documents/GitHub/SudokuSolver/src/main/java/com/rmit/sudoku/generator/SudokuGenerator.java
 /Users/finn/Documents/GitHub/SudokuSolver/src/main/java/com/rmit/sudoku/validator/SudokuValidator.java
+/Users/finn/Documents/GitHub/SudokuSolver/src/main/java/com/rmit/sudoku/solver/DancingLinksSudokuSolver.java
 /Users/finn/Documents/GitHub/SudokuSolver/src/main/java/com/rmit/sudoku/SudokuApplication.java
 /Users/finn/Documents/GitHub/SudokuSolver/src/main/java/com/rmit/sudoku/solver/SudokuSolver.java
 /Users/finn/Documents/GitHub/SudokuSolver/src/main/java/com/rmit/sudoku/solver/BacktrackingSudokuSolver.java
