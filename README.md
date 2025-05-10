@@ -1,21 +1,37 @@
 # RMIT Sudoku Solver
 
-A Sudoku solver application with a Java backend and React frontend.
+A comprehensive Sudoku solver application with a Java backend and React frontend, featuring multiple solving algorithms and puzzle generation capabilities.
 
 ## Features
 
-- Solve 9x9 Sudoku puzzles using an efficient backtracking algorithm
-- Interactive grid for entering puzzles
-- Four control buttons:
+- Solve 9x9 Sudoku puzzles using two efficient algorithms:
+  - Backtracking algorithm (classic approach)
+  - Dancing Links (DLX) algorithm (Knuth's Algorithm X implementation)
+- Generate Sudoku puzzles with varying difficulty levels:
+  - Easy: 35-45 filled cells
+  - Medium: 28-34 filled cells
+  - Hard: 22-27 filled cells
+  - Expert: 17-21 filled cells
+- Performance metrics display:
+  - Time complexity (operations count and milliseconds)
+  - Space complexity (constant O(1) for 9x9 grid)
+- Interactive web interface with:
   - Solve: Solves the current puzzle
   - Unsolve: Reverts to the original puzzle state
-  - Load Example: Loads a predefined Sudoku puzzle
+  - Generate: Creates new puzzles with selected difficulty
   - Clear: Clears all cells in the grid
 
 ## Project Structure
 
 - `src/main/java`: Java backend code
   - `com.rmit.sudoku.RMIT_Sudoku_Solver`: Main solver class
+  - `com.rmit.sudoku.solver`: Solver implementations
+    - `BacktrackingSudokuSolver`: Classic backtracking algorithm
+    - `DancingLinksSudokuSolver`: Knuth's Algorithm X implementation
+  - `com.rmit.sudoku.generator`: Puzzle generation
+    - `SudokuGenerator`: Creates puzzles with varying difficulties
+  - `com.rmit.sudoku.metrics`: Performance tracking
+    - `SudokuMetrics`: Tracks time and space complexity
   - `com.rmit.sudoku.controller`: REST API controllers
   - `com.rmit.sudoku.model`: Data models
 - `frontend`: React frontend code
@@ -58,13 +74,18 @@ The frontend will start on http://localhost:3000
 1. Enter numbers (1-9) in the cells to create a Sudoku puzzle
    - Leave cells empty (or enter 0) for cells to be solved
 2. Click "Solve" to solve the puzzle
+   - The system will attempt to solve using both algorithms and display performance metrics
 3. Click "Unsolve" to revert to the original puzzle
-4. Click "Load Example" to load a predefined puzzle
+4. Click "Generate" to create a new puzzle
+   - Select difficulty level from the dropdown (Easy, Medium, Hard, Expert)
 5. Click "Clear" to clear all cells
 
 ## Implementation Details
 
-The Sudoku solver uses a backtracking algorithm to efficiently find solutions:
+### Solving Algorithms
+
+#### Backtracking Algorithm
+The classic approach to solving Sudoku puzzles:
 1. Find an empty cell
 2. Try placing numbers 1-9 in the cell
 3. Check if the number is valid in that position
@@ -72,4 +93,23 @@ The Sudoku solver uses a backtracking algorithm to efficiently find solutions:
 5. If the recursive call returns false, backtrack and try the next number
 6. If all numbers 1-9 have been tried and none work, the puzzle is unsolvable
 
-The frontend communicates with the backend via a REST API to solve puzzles.
+#### Dancing Links (DLX) Algorithm
+An implementation of Donald Knuth's Algorithm X using the Dancing Links technique:
+1. Represents the Sudoku puzzle as an exact cover problem
+2. Uses a sparse matrix representation with doubly-linked lists
+3. Efficiently finds solutions through recursive search with column selection heuristics
+4. Provides an alternative solving method that can be more efficient for certain puzzles
+
+### Puzzle Generation
+The puzzle generator creates valid Sudoku puzzles with unique solutions:
+1. Generates a fully solved puzzle
+2. Systematically removes numbers while ensuring a unique solution remains
+3. Adjusts the number of filled cells based on the selected difficulty level
+
+### Performance Metrics
+The application tracks and displays performance metrics:
+- Time complexity: Number of operations and milliseconds taken
+- Space complexity: Constant O(1) for the 9x9 grid (81 cells)
+- Maximum recursion depth during solving
+
+The frontend communicates with the backend via a REST API to solve puzzles and generate new ones.
