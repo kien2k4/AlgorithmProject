@@ -14,6 +14,8 @@ const SudokuBoard = () => {
   const [error, setError] = useState(null);
   const [validationError, setValidationError] = useState(null);
   const [isSolved, setIsSolved] = useState(false);
+  const [generatingPuzzle, setGeneratingPuzzle] = useState(false);
+  const [complexityMetrics, setComplexityMetrics] = useState(null);
 
   // Example Sudoku puzzle
   const examplePuzzle = [
@@ -142,6 +144,8 @@ const SudokuBoard = () => {
       setValidationError(null);
       setInvalidCells([]);
       setIsSolved(false);
+
+      setComplexityMetrics(null);
       return;
     }
 
@@ -166,8 +170,18 @@ const SudokuBoard = () => {
       if (response.data.solved) {
         setBoard(response.data.board);
         setIsSolved(true);
+        // Store complexity metrics
+        setComplexityMetrics({
+          operations: response.data.operationCount,
+          time: response.data.timeTakenMs
+        });
       } else {
         setError(response.data.message || 'Failed to solve the puzzle.');
+        // Store complexity metrics even for failed attempts
+        setComplexityMetrics({
+          operations: response.data.operationCount,
+          time: response.data.timeTakenMs
+        });
       }
     } catch (err) {
       setError('Error connecting to the server. Please try again.');
@@ -185,6 +199,8 @@ const SudokuBoard = () => {
     setValidationError(null);
     setInvalidCells([]);
     setIsSolved(false);
+    setComplexityMetrics(null);
+
   };
 
   // Clear the board
@@ -195,6 +211,36 @@ const SudokuBoard = () => {
     setValidationError(null);
     setInvalidCells([]);
     setIsSolved(false);
+    setComplexityMetrics(null);
+  };
+
+  // Generate a puzzle with the specified difficulty
+  const generatePuzzle = async (difficulty) => {
+    try {
+      setGeneratingPuzzle(true);
+      setError(null);
+      setValidationError(null);
+      setInvalidCells([]);
+      setIsSolved(false);
+      setComplexityMetrics(null);
+
+      // Call the API to generate a puzzle
+      const response = await axios.get(`/api/sudoku/generate/${difficulty}`);
+
+      if (response.data.board) {
+        // Update the board with the generated puzzle
+        setBoard(response.data.board);
+        setOriginalBoard(response.data.board.map(row => [...row]));
+      } else {
+        setError('Failed to generate puzzle.');
+      }
+    } catch (err) {
+      setError('Error generating puzzle: ' + (err.response?.data?.message || err.message));
+      console.error(err);
+    } finally {
+      setGeneratingPuzzle(false);
+    }
+
   };
 
   return (
@@ -218,15 +264,30 @@ const SudokuBoard = () => {
       </div>
 
       <div className="controls">
-        <button onClick={toggleSolve} disabled={loading}>
+        <button onClick={toggleSolve} disabled={loading || generatingPuzzle}>
           {loading ? 'Solving...' : isSolved ? 'Unsolve' : 'Solve'}
         </button>
-        <button onClick={loadExample}>Load Example</button>
-        <button onClick={clearBoard}>Clear</button>
+        <button onClick={loadExample} disabled={generatingPuzzle}>Load Example</button>
+        <button onClick={clearBoard} disabled={generatingPuzzle}>Clear</button>
+      </div>
+
+      <div className="difficulty-controls">
+        <p>Generate Puzzle:</p>
+        <button onClick={() => generatePuzzle('EASY')} disabled={loading || generatingPuzzle}>Easy</button>
+        <button onClick={() => generatePuzzle('MEDIUM')} disabled={loading || generatingPuzzle}>Medium</button>
+        <button onClick={() => generatePuzzle('HARD')} disabled={loading || generatingPuzzle}>Hard</button>
+        <button onClick={() => generatePuzzle('EXPERT')} disabled={loading || generatingPuzzle}>Expert</button>
       </div>
 
       {error && <div className="error-message">{error}</div>}
       {validationError && <div className="validation-error-message">Invalid input: {validationError}</div>}
+
+      {complexityMetrics && (
+        <div className="complexity-metrics">
+          <p><strong>Time Complexity:</strong> {complexityMetrics.operations.toLocaleString()} operations in {complexityMetrics.time} ms</p>
+          <p><strong>Space Complexity:</strong> O(1) - constant for 9x9 grid (81 cells)</p>
+        </div>
+      )}
     </div>
   );
 };

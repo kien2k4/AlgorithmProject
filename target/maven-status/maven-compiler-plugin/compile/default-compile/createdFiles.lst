@@ -1,6 +1,8 @@
+com/rmit/sudoku/generator/SudokuGenerator.class
 com/rmit/sudoku/model/SudokuResponse.class
-com/rmit/sudoku/model/SudokuRequest.class
-com/rmit/sudoku/RMIT_Sudoku_Solver.class
-com/rmit/sudoku/controller/SudokuController.class
-com/rmit/sudoku/SudokuApplication$1.class
 com/rmit/sudoku/SudokuApplication.class
+com/rmit/sudoku/RMIT_Sudoku_Solver.class
+com/rmit/sudoku/model/SudokuRequest.class
+com/rmit/sudoku/controller/SudokuController.class
+com/rmit/sudoku/generator/SudokuGenerator$Difficulty.class
+com/rmit/sudoku/SudokuApplication$1.class

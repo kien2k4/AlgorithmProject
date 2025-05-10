@@ -12,7 +12,7 @@ public class SudokuApplication {
     public static void main(String[] args) {
         SpringApplication.run(SudokuApplication.class, args);
     }
-    
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {

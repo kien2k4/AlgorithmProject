@@ -4,6 +4,10 @@ public class SudokuResponse {
     private int[][] board;
     private boolean solved;
     private String message;
+    private long operationCount;
+    private long timeTakenMs;
+    private int maxRecursionDepth;
+    private String memoryUsed;
 
     public int[][] getBoard() {
         return board;
@@ -27,5 +31,37 @@ public class SudokuResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public long getOperationCount() {
+        return operationCount;
+    }
+
+    public void setOperationCount(long operationCount) {
+        this.operationCount = operationCount;
+    }
+
+    public long getTimeTakenMs() {
+        return timeTakenMs;
+    }
+
+    public void setTimeTakenMs(long timeTakenMs) {
+        this.timeTakenMs = timeTakenMs;
+    }
+
+    public int getMaxRecursionDepth() {
+        return maxRecursionDepth;
+    }
+
+    public void setMaxRecursionDepth(int maxRecursionDepth) {
+        this.maxRecursionDepth = maxRecursionDepth;
+    }
+
+    public String getMemoryUsed() {
+        return memoryUsed;
+    }
+
+    public void setMemoryUsed(String memoryUsed) {
+        this.memoryUsed = memoryUsed;
     }
 }

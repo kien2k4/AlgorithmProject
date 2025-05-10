@@ -1,112 +1,66 @@
 package com.rmit.sudoku;
 
+import com.rmit.sudoku.solver.BacktrackingSudokuSolver;
+import com.rmit.sudoku.solver.SudokuSolver;
+import com.rmit.sudoku.solver.SudokuTimeoutException;
+
 /**
  * RMIT_Sudoku_Solver class for solving 9x9 Sudoku puzzles.
  * Uses a backtracking algorithm to efficiently find solutions.
+ * Tracks and reports time and space complexity metrics.
  */
 public class RMIT_Sudoku_Solver {
-    
+
     private static final int GRID_SIZE = 9;
-    
+    private final SudokuSolver solver;
+
+    /**
+     * Creates a new RMIT_Sudoku_Solver with the default solver.
+     */
+    public RMIT_Sudoku_Solver() {
+        this.solver = new BacktrackingSudokuSolver();
+    }
+
+    /**
+     * Creates a new RMIT_Sudoku_Solver with a custom solver.
+     *
+     * @param solver The solver to use
+     */
+    public RMIT_Sudoku_Solver(SudokuSolver solver) {
+        this.solver = solver;
+    }
+
     /**
      * Solves a Sudoku puzzle.
      *
      * @param board 2D array representing the Sudoku puzzle (0 for empty cells, 1-9 for filled cells)
      * @return The solved puzzle as a 2D array, or null if no solution exists
+     * @throws RuntimeException if the puzzle cannot be solved within 2 minutes
      */
     public int[][] solve(int[][] board) {
-        // Create a copy of the input board to avoid modifying the original
-        int[][] workingBoard = new int[GRID_SIZE][GRID_SIZE];
-        for (int i = 0; i < GRID_SIZE; i++) {
-            System.arraycopy(board[i], 0, workingBoard[i], 0, GRID_SIZE);
+        try {
+            return solver.solve(board);
+        } catch (SudokuTimeoutException e) {
+            // Convert to RuntimeException to maintain backward compatibility
+            throw new RuntimeException("Timeout: " + e.getMessage(), e);
         }
+    }
 
-        // Solve the puzzle
-        if (solveBoard(workingBoard)) {
-            return workingBoard;
-        } else {
-            return null; // No solution exists
-        }
-    }
-    
     /**
-     * Recursive backtracking algorithm to solve the Sudoku puzzle.
+     * Gets the metrics from the solver.
      *
-     * @param board The current state of the board
-     * @return true if a solution is found, false otherwise
+     * @return The metrics from the solver if it's a BacktrackingSudokuSolver, null otherwise
      */
-    private boolean solveBoard(int[][] board) {
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                // Find an empty cell
-                if (board[row][col] == 0) {
-                    // Try placing numbers 1-9
-                    for (int numberToTry = 1; numberToTry <= GRID_SIZE; numberToTry++) {
-                        if (isValidPlacement(board, numberToTry, row, col)) {
-                            // Place the number
-                            board[row][col] = numberToTry;
-                            
-                            // Recursively try to solve the rest of the board
-                            if (solveBoard(board)) {
-                                return true;
-                            }
-                            
-                            // If placing the number doesn't lead to a solution, backtrack
-                            board[row][col] = 0;
-                        }
-                    }
-                    // If no number can be placed in this cell, the puzzle is unsolvable
-                    return false;
-                }
-            }
+    public com.rmit.sudoku.metrics.SudokuMetrics getMetrics() {
+        if (solver instanceof BacktrackingSudokuSolver) {
+            return ((BacktrackingSudokuSolver) solver).getMetrics();
         }
-        // If we've filled all cells, we've solved the puzzle
-        return true;
+        return null;
     }
-    
-    /**
-     * Checks if placing a number at a specific position is valid.
-     * 
-     * @param board The current state of the board
-     * @param number The number to place
-     * @param row The row index
-     * @param col The column index
-     * @return true if the placement is valid, false otherwise
-     */
-    private boolean isValidPlacement(int[][] board, int number, int row, int col) {
-        // Check row
-        for (int i = 0; i < GRID_SIZE; i++) {
-            if (board[row][i] == number) {
-                return false;
-            }
-        }
-        
-        // Check column
-        for (int i = 0; i < GRID_SIZE; i++) {
-            if (board[i][col] == number) {
-                return false;
-            }
-        }
-        
-        // Check 3x3 box
-        int boxStartRow = row - row % 3;
-        int boxStartCol = col - col % 3;
-        
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[boxStartRow + i][boxStartCol + j] == number) {
-                    return false;
-                }
-            }
-        }
-        
-        // If we get here, the placement is valid
-        return true;
-    }
-    
+
     /**
      * Utility method to print a Sudoku board.
-     * 
+     *
      * @param board The board to print
      */
     public void printBoard(int[][] board) {
@@ -118,17 +72,18 @@ public class RMIT_Sudoku_Solver {
                 if (col % 3 == 0 && col != 0) {
                     System.out.print("| ");
                 }
-                System.out.print(board[row][col] == 0 ? ". " : board[row][col] + " ");
+                System.out.print(board[row][col] == 0 ? "0 " : board[row][col] + " ");
             }
             System.out.println();
         }
     }
-    
+
     /**
-     * Test method with a sample Sudoku puzzle.
+     * Main method to demonstrate the Sudoku solver.
      */
     public static void main(String[] args) {
-        int[][] board = {
+        // Easy puzzle
+        int[][] easyBoard = {
             {5, 3, 0, 0, 7, 0, 0, 0, 0},
             {6, 0, 0, 1, 9, 5, 0, 0, 0},
             {0, 9, 8, 0, 0, 0, 0, 6, 0},
@@ -139,18 +94,56 @@ public class RMIT_Sudoku_Solver {
             {0, 0, 0, 4, 1, 9, 0, 0, 5},
             {0, 0, 0, 0, 8, 0, 0, 7, 9}
         };
-        
+
+        // Hard puzzle with more empty cells
+        int[][] hardBoard = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 3, 0, 8, 5},
+            {0, 0, 1, 0, 2, 0, 0, 0, 0},
+            {0, 0, 0, 5, 0, 7, 0, 0, 0},
+            {0, 0, 4, 0, 0, 0, 1, 0, 0},
+            {0, 9, 0, 0, 0, 0, 0, 0, 0},
+            {5, 0, 0, 0, 0, 0, 0, 7, 3},
+            {0, 0, 2, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 4, 0, 0, 0, 9}
+        };
+
         RMIT_Sudoku_Solver solver = new RMIT_Sudoku_Solver();
+
+        // Solve easy puzzle
+        System.out.println("Solving Easy Puzzle:");
         System.out.println("Unsolved Puzzle:");
-        solver.printBoard(board);
-        
-        int[][] solvedBoard = solver.solve(board);
-        
-        if (solvedBoard != null) {
-            System.out.println("\nSolved Puzzle:");
-            solver.printBoard(solvedBoard);
-        } else {
-            System.out.println("\nNo solution exists for this puzzle.");
+        solver.printBoard(easyBoard);
+
+        try {
+            int[][] solvedEasyBoard = solver.solve(easyBoard);
+
+            if (solvedEasyBoard != null) {
+                System.out.println("\nSolved Puzzle:");
+                solver.printBoard(solvedEasyBoard);
+            } else {
+                System.out.println("\nNo solution exists for this puzzle.");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("\nFailed to solve puzzle: " + e.getMessage());
+        }
+
+        // Solve hard puzzle
+        System.out.println("\n\nSolving Hard Puzzle:");
+        System.out.println("Unsolved Puzzle:");
+        solver.printBoard(hardBoard);
+
+        try {
+            int[][] solvedHardBoard = solver.solve(hardBoard);
+
+            if (solvedHardBoard != null) {
+                System.out.println("\nSolved Puzzle:");
+                solver.printBoard(solvedHardBoard);
+            } else {
+                System.out.println("\nNo solution exists for this puzzle.");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("\nFailed to solve puzzle: " + e.getMessage());
         }
     }
 }

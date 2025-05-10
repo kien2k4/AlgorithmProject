@@ -17,14 +17,15 @@
   display: flex;
 }
 
-.controls {
+.controls, .difficulty-controls {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  align-items: center;
 }
 
-.controls button {
-  padding: 10px 20px;
+.controls button, .difficulty-controls button {
+  padding: 10px 15px;
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -34,13 +35,39 @@
   transition: background-color 0.3s;
 }
 
-.controls button:hover {
+.controls button:hover, .difficulty-controls button:hover {
   background-color: #45a049;
 }
 
-.controls button:disabled {
+.controls button:disabled, .difficulty-controls button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.difficulty-controls {
+  margin-top: 10px;
+}
+
+.difficulty-controls p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.difficulty-controls button:nth-child(2) {
+  background-color: #4CAF50; /* Easy - Green */
+}
+
+.difficulty-controls button:nth-child(3) {
+  background-color: #FFC107; /* Medium - Yellow */
+  color: #333;
+}
+
+.difficulty-controls button:nth-child(4) {
+  background-color: #FF9800; /* Hard - Orange */
+}
+
+.difficulty-controls button:nth-child(5) {
+  background-color: #F44336; /* Expert - Red */
 }
 
 .error-message, .validation-error-message {
@@ -53,4 +80,20 @@
   border: 1px solid #ffcdd2;
   max-width: 400px;
   text-align: center;
+}
+
+.complexity-metrics {
+  margin-top: 20px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  background-color: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  max-width: 500px;
+  text-align: left;
+  font-size: 14px;
+  color: #2e7d32;
+}
+
+.complexity-metrics p {
+  margin: 5px 0;
 }
