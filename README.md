@@ -141,5 +141,14 @@ The application tracks and displays comprehensive performance metrics:
 - Memory usage statistics
 
 Both solving algorithms (Backtracking and Dancing Links) provide detailed metrics, allowing for performance comparison between the two approaches. The Dancing Links algorithm typically performs better on more complex puzzles with fewer initial clues.
-
 The frontend communicates with the backend via a REST API to solve puzzles and generate new ones.
+
+### Team Members & Contributions
+| Student ID | Full Name              | Points |
+|------------|------------------------|--------|
+| S3927205   | Le Ngoc Hieu           | 4      |
+| S3979510   | Dang Trung Kien        | 7      |
+| S3983370   | Le Kim Quyen           | 5      |
+| S3921846   | Nguyen Dai Thanh       | 5      |
+| S3979772   | Ngo Nguyen Minh Tri    | 4      |
+**Total Contribution Points:** 25
