@@ -1,7 +1,7 @@
 package com.rmit.sudoku;
 
 import com.rmit.sudoku.solver.BacktrackingSudokuSolver;
-import com.rmit.sudoku.solver.DancingLinksSudokuSolver;
+import com.rmit.sudoku.solver.dlx.SudokuDLXSolver;
 import com.rmit.sudoku.solver.SudokuSolver;
 import com.rmit.sudoku.solver.SudokuTimeoutException;
 
@@ -21,7 +21,7 @@ public class RMIT_Sudoku_Solver {
      */
     public RMIT_Sudoku_Solver() {
         this.backtrackingSolver = new BacktrackingSudokuSolver();
-        this.dancingLinksSolver = new DancingLinksSudokuSolver();
+        this.dancingLinksSolver = new SudokuDLXSolver();
     }
 
     /**
@@ -115,8 +115,8 @@ public class RMIT_Sudoku_Solver {
      * @return The metrics from the dancing links solver
      */
     public com.rmit.sudoku.metrics.SudokuMetrics getDancingLinksMetrics() {
-        if (dancingLinksSolver instanceof DancingLinksSudokuSolver) {
-            return ((DancingLinksSudokuSolver) dancingLinksSolver).getMetrics();
+        if (dancingLinksSolver instanceof SudokuDLXSolver) {
+            return ((SudokuDLXSolver) dancingLinksSolver).getMetrics();
         }
         return null;
     }
@@ -147,28 +147,28 @@ public class RMIT_Sudoku_Solver {
     public static void main(String[] args) {
         // Easy puzzle
         int[][] easyBoard = {
-            {5, 3, 0, 0, 7, 0, 0, 0, 0},
-            {6, 0, 0, 1, 9, 5, 0, 0, 0},
-            {0, 9, 8, 0, 0, 0, 0, 6, 0},
-            {8, 0, 0, 0, 6, 0, 0, 0, 3},
-            {4, 0, 0, 8, 0, 3, 0, 0, 1},
-            {7, 0, 0, 0, 2, 0, 0, 0, 6},
-            {0, 6, 0, 0, 0, 0, 2, 8, 0},
-            {0, 0, 0, 4, 1, 9, 0, 0, 5},
-            {0, 0, 0, 0, 8, 0, 0, 7, 9}
+                {0, 2, 0, 6, 0, 8, 0, 0, 0},
+                {5, 8, 0, 0, 0, 9, 0, 7, 0},
+                {0, 0, 0, 0, 4, 0, 0, 0, 0},
+                {3, 7, 0, 0, 0, 0, 5, 0, 0},
+                {6, 0, 0, 0, 0, 0, 0, 0, 4},
+                {0, 0, 8, 0, 0, 0, 0, 1, 3},
+                {0, 0, 0, 0, 2, 0, 0, 0, 0},
+                {0, 0, 9, 8, 0, 0, 0, 3, 6},
+                {0, 0, 0, 3, 0, 6, 0, 9, 0}
         };
 
         // Hard puzzle with more empty cells
         int[][] hardBoard = {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 3, 0, 8, 5},
-            {0, 0, 1, 0, 2, 0, 0, 0, 0},
-            {0, 0, 0, 5, 0, 7, 0, 0, 0},
-            {0, 0, 4, 0, 0, 0, 1, 0, 0},
-            {0, 9, 0, 0, 0, 0, 0, 0, 0},
-            {5, 0, 0, 0, 0, 0, 0, 7, 3},
-            {0, 0, 2, 0, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 4, 0, 0, 0, 9}
+                {0, 2, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 6, 0, 0, 0, 0, 3},
+                {0, 7, 4, 0, 8, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 3, 0, 0, 2},
+                {0, 8, 0, 0, 4, 0, 0, 1, 0},
+                {6, 0, 0, 5, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 1, 0, 7, 8, 0},
+                {5, 0, 0, 0, 0, 9, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 4, 0}
         };
 
         RMIT_Sudoku_Solver solver = new RMIT_Sudoku_Solver();

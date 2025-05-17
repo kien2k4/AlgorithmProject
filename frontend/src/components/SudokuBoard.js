@@ -162,8 +162,6 @@ const SudokuBoard = () => {
 
       // Save the original board state before solving
       setOriginalBoard(board.map(row => [...row]));
-
-      // Send the board to the backend for solving
       const response = await axios.post('/api/sudoku/solve', { board });
 
       // Update the board with the solution
